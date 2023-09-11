@@ -4,6 +4,7 @@ import com.catalisa.gereciadorBiblioteca.model.BibliotecaModel;
 import com.catalisa.gereciadorBiblioteca.service.BibliotecaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,11 +18,13 @@ public class BibliotecaController {
     @Autowired
     private BibliotecaService livroService;
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping
     public List<BibliotecaModel> buscaTodosLivros() {
         return livroService.buscarTodos();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public Optional<BibliotecaModel> buscarLivroPorId(@PathVariable Long id) {
         return livroService.buscarPorId(id);
